@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DevStream Programming Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f3ff;
+            color: #312e81;
+            padding: 40px;
+        }
+        .quiz-card {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            border: 2px solid #a78bfa;
+            box-shadow: 0 5px 15px #ccc;
+        }
+        .option {
+            display: block;
+            margin: 10px 0;
+            padding: 12px;
+            background: #ede9fe;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 24px;
+            background: #6d28d9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #4c1d95;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-card">
+    <h2>💻 DevStream Programming Quiz</h2>
+    <p id="progress">Question 1 of 3</p>
+    <h3 id="questionText"></h3>
+    <div id="optionsBox"></div>
+    <button id="nextBtn" onclick="nextQuestion()">Next Question →</button>
+    <h3 id="scoreDisplay"></h3>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "Which language is used for web page structure?",
+            options: ["Python", "HTML", "C", "Java"],
+            ans: 1
+        },
+        {
+            q: "Which symbol is used to end a C statement?",
+            options: [".", ":", ";", ","],
+            ans: 2
+        },
+        {
+            q: "Which language is mainly used for web page interactivity?",
+            options: ["JavaScript", "HTML", "SQL", "C"],
+            ans: 0
+        }
+    ];
+
+    let current = 0, score = 0;
+
+    function loadQuestion() {
+        let item = questions[current];
+
+        document.getElementById("progress").innerText =
+            `Question ${current + 1} of ${questions.length}`;
+
+        document.getElementById("questionText").innerText = item.q;
+
+        let box = document.getElementById("optionsBox");
+        box.innerHTML = "";
+
+        item.options.forEach((opt, i) => {
+            box.innerHTML += `
+                <label class="option">
+                    <input type="radio" name="opt" value="${i}">
+                    ${opt}
+                </label>`;
+        });
+    }
+
+    function nextQuestion() {
+        let selected = document.querySelector('input[name="opt"]:checked');
+
+        if (!selected) {
+            alert("Please select an answer!");
+            return;
+        }
+
+        if (Number(selected.value) === questions[current].ans) {
+            score++;
+        }
+
+        current++;
+
+        if (current < questions.length) {
+            loadQuestion();
+        } else {
+            document.getElementById("questionText").innerText =
+                "Quiz Completed!";
+
+            document.getElementById("optionsBox").innerHTML = "";
+            document.getElementById("nextBtn").style.display = "none";
+
+            document.getElementById("scoreDisplay").innerText =
+                `Your DevStream Score: ${score} / ${questions.length}`;
+        }
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
